@@ -21,7 +21,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/dispatches`, {
+    const dispatchUrl = `https://api.github.com/repos/${owner}/${repo}/dispatches`;
+
+    const res = await fetch(dispatchUrl, {
       method: 'POST',
       headers: {
         Accept: 'application/vnd.github+json',
@@ -34,12 +36,20 @@ export async function POST(req: NextRequest) {
       }),
     });
 
+    const detalle = await res.text();
+
     if (!res.ok) {
-      const detalle = await res.text();
-      return NextResponse.json({ error: `Error de GitHub: ${detalle}` }, { status: 502 });
+      return NextResponse.json(
+        { error: `Error de GitHub (status ${res.status}): ${detalle}`, dispatchUrl },
+        { status: 502 }
+      );
     }
 
-    return NextResponse.json({ ok: true, mensaje: 'Scraping iniciado, aparecerá en el listado en 1-2 minutos.' });
+    return NextResponse.json({
+      ok: true,
+      mensaje: `Scraping iniciado (GitHub respondió ${res.status}), aparecerá en el listado en 1-2 minutos.`,
+      debug: { dispatchUrl, status: res.status, owner, repo },
+    });
   } catch (err) {
     return NextResponse.json({ error: (err as Error).message }, { status: 500 });
   }
