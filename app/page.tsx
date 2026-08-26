@@ -142,42 +142,48 @@ export default function Home() {
           <p className="text-neutral-500 text-sm">Sin resultados. Corré el scraper o ajustá los filtros.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtradas.map((p) => (
-              
-                key={p.id}
-                href={p.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-xl overflow-hidden border border-neutral-200 bg-white hover:shadow-md transition-shadow"
-              >
-                <div className="aspect-[4/3] bg-neutral-100 overflow-hidden">
-                  {p.fotos?.[0] ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={p.fotos[0]}
-                      alt={p.titulo ?? ''}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-neutral-400 text-sm">
-                      Sin foto
-                    </div>
-                  )}
-                </div>
-                <div className="p-3 space-y-1">
-                  <p className="font-semibold text-sm">
-                    {p.moneda === 'USD' ? 'U$S' : '$'} {p.precio?.toLocaleString('es-AR') ?? '—'}
-                  </p>
-                  <p className="text-sm text-neutral-700 line-clamp-2">{p.titulo}</p>
-                  <p className="text-xs text-neutral-500">{p.ubicacion}</p>
-                  <p className="text-xs text-neutral-400">
-                    {[p.ambientes && `${p.ambientes} amb.`, p.dormitorios && `${p.dormitorios} dorm.`, p.m2_totales && `${p.m2_totales} m²`]
-                      .filter(Boolean)
-                      .join(' · ')}
-                  </p>
-                </div>
-              </a>
-            ))}
+            {filtradas.map((p) => {
+              return (
+                
+                  key={p.id}
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group rounded-xl overflow-hidden border border-neutral-200 bg-white hover:shadow-md transition-shadow"
+                >
+                  <div className="aspect-[4/3] bg-neutral-100 overflow-hidden">
+                    {p.fotos && p.fotos[0] ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={p.fotos[0]}
+                        alt={p.titulo ?? ''}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-neutral-400 text-sm">
+                        Sin foto
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-3 space-y-1">
+                    <p className="font-semibold text-sm">
+                      {p.moneda === 'USD' ? 'U$S' : '$'} {p.precio ? p.precio.toLocaleString('es-AR') : '—'}
+                    </p>
+                    <p className="text-sm text-neutral-700 line-clamp-2">{p.titulo}</p>
+                    <p className="text-xs text-neutral-500">{p.ubicacion}</p>
+                    <p className="text-xs text-neutral-400">
+                      {[
+                        p.ambientes ? `${p.ambientes} amb.` : null,
+                        p.dormitorios ? `${p.dormitorios} dorm.` : null,
+                        p.m2_totales ? `${p.m2_totales} m²` : null,
+                      ]
+                        .filter(Boolean)
+                        .join(' · ')}
+                    </p>
+                  </div>
+                </a>
+              );
+            })}
           </div>
         )}
       </section>
