@@ -142,10 +142,9 @@ export default function Home() {
           <p className="text-neutral-500 text-sm">Sin resultados. Corré el scraper o ajustá los filtros.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtradas.map((p) => {
+            {            {filtradas.map((p) => {
               return (
-                
-                  key={p.id}
+                <a key={p.id}
                   href={p.url}
                   target="_blank"
                   rel="noopener noreferrer"
