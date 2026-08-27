@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       ok: true,
-      mensaje: `Scraping iniciado (GitHub respondió ${res.status}), aparecerá en el listado en 1-2 minutos.`,
+      mensaje: `GitHub respondió ${res.status} para owner="${owner}" repo="${repo}" url_evento="${dispatchUrl}"`,
       debug: { dispatchUrl, status: res.status, owner, repo },
     });
   } catch (err) {
